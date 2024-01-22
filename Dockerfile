@@ -1,10 +1,10 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /code
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+COPY ./requirements.txt /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY main.py /app/main.py
+COPY ./app /code/app
 
-CMD ["uvicorn", "main:app", "--host", "127.0.0.1", "--port", "5555"]
+CMD ["uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "5555"]

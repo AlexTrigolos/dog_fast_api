@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  api:
+    image: alextrigolosvlg/dog_fast_api:image
+    ports:
+      - "5555:5555"
+    restart: always
+
+  bot:
+    image: alextrigolosvlg/dog_fast_api_bot:image
+    environment:
+      - BOT_TOKEN=
+      - BOT_API_URL=http://api
+    restart: always
