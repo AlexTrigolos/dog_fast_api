@@ -82,7 +82,6 @@ async def http_request(callback, httpclient, method, url, params='', json=None):
 
 
 def format_answer(answer):
-    print(answer)
     return f"name: {answer['name']}, pk: {answer['pk']}, kind: {answer['kind']}"
 
 
@@ -157,7 +156,7 @@ async def send_found_dogs(message: types.Message, httpclient: ClientSession, sta
 async def update_dog(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(Request.update_dog.state)
     example = f"\"old_pk: <старый_идентификатор>, name: <кличка_вашей_собаки>, pk: <новый_или_старый_уникальный_идентификатор>, kind: <{'_или_'.join(DOG_TYPES)}>\""
-    await callback.message.answer(text=f'Необходимо заполнить новые данные собаки в следующем формате: {example}\nПример: name: Name, pk: 12, kind: dalmatian')
+    await callback.message.answer(text=f'Необходимо заполнить новые данные собаки в следующем формате: {example}\nПример: old_pk: 10, name: Name, pk: 12, kind: dalmatian')
 
 
 @dp.message(StateFilter(Request.update_dog), lambda message: re.findall(r"old_pk: (\d+), name: (\w+), pk: (\d+), kind: (terrier|bulldog|dalmatian)", message.text.lower()))

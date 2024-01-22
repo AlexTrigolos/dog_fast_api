@@ -48,7 +48,7 @@ def root():
 
 @app.post('/post', response_model=Timestamp, summary='Get Post')
 def create_and_take_post():
-    post_db.append(Timestamp(id=(post_db[-1].id or 0), timestamp=int(datetime.datetime.now().timestamp())))
+    post_db.append(Timestamp(id=(post_db[-1].id + 1 or 0), timestamp=int(datetime.datetime.now().timestamp())))
     return post_db[-1]
 
 
