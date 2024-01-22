@@ -184,5 +184,5 @@ async def main():
     async with session as aiohttp_client:
         await dp.start_polling(bot, httpclient=aiohttp_client, close_bot_session=True)
 
-if __name__ == '__bot_main__':
+if __name__ == '__main__':
     asyncio.run(main())
