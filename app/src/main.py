@@ -1,9 +1,16 @@
-from enum import Enum
 import datetime
+import uvicorn
+
+from enum import Enum
 from typing import List
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+
+from redis import asyncio as aioredis
+from fastapi_cache import FastAPICache
+from fastapi_cache.decorator import cache
+from fastapi_cache.backends.redis import RedisBackend
 
 app = FastAPI(title='Dog API')
 
@@ -53,6 +60,7 @@ def create_and_take_post():
 
 
 @app.get('/dog', response_model=List[Dog], summary='Get Dogs')
+@cache(expire=30)
 def take_dog(kind: DogType):
     return [dog for pk, dog in dogs_db.items() if dog.kind == kind]
 
@@ -69,6 +77,7 @@ def create_dog(dog: Dog):
 
 
 @app.get('/dog/{pk}', response_model=Dog, summary='Get Dog By Pk')
+@cache(expire=30)
 def take_dog(pk: int):
     dog_dict = {dog.pk: dog for dog in dogs_db.values()}
 
@@ -97,3 +106,10 @@ def update_dog(pk: int, dog: Dog):
 
 def trow_error(msg: str, error_type: str):
     raise HTTPException(status_code=422, detail=[{"loc": ["body", "pk"], "msg": msg, "type": error_type}])
+
+
+redis = aioredis.from_url("redis://localhost")
+FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+if __name__ == '__main__':
+    uvicorn.run('main:app', host='localhost', reload=True)

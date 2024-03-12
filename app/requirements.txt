@@ -1,3 +1,6 @@
 fastapi==0.109.0
 pydantic~=2.5.3
 uvicorn==0.26.0
+aioredis==2.0.1
+redis==5.0.3
+fastapi-cache2==0.2.1
